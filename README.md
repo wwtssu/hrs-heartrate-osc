@@ -127,7 +127,7 @@ If "Send OSC to VRChat" is enabled, this app will continue to send the following
 
 
 ### Useful links
-
+* [huami-token](https://github.com/argrento/huami-token)
 * [Microsoft GATT Documentation](https://docs.microsoft.com/fr-fr/windows/uwp/devices-sensors/bluetooth-low-energy-overview)
 * [Mi Band 2 Authentication by leojrfs](https://leojrfs.github.io/writing/miband2-part1-auth/#reference), [python](https://github.com/leojrfs/miband2)
 * https://github.com/creotiv/MiBand2
