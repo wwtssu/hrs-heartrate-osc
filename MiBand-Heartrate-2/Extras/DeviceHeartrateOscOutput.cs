@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
-using System.Net;
+using System.ComponentModel;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using MiBand_Heartrate_2.Devices;
-using Rug.Osc;
+using OscCore;
 
 namespace MiBand_Heartrate_2.Extras
 {
@@ -11,7 +11,7 @@ namespace MiBand_Heartrate_2.Extras
     {
         Device _device;
 
-        private OscSender _oscSender;
+        private UdpClient _udpClient;
 
         private CancellationTokenSource _cancellationTokenSource;
 
@@ -61,8 +61,8 @@ namespace MiBand_Heartrate_2.Extras
         public DeviceHeartrateOscOutput(Device device)
         {
             // Choose an unused port at random
-            _oscSender = new OscSender(IPAddress.Loopback, 0,  9000);
-            _oscSender.Connect();
+            _udpClient = new UdpClient();
+            _udpClient.Connect("localhost", 9000);
             
             _device = device;
 
@@ -75,7 +75,7 @@ namespace MiBand_Heartrate_2.Extras
         ~DeviceHeartrateOscOutput()
         {
             _device.PropertyChanged -= OnDeviceChanged;
-            _oscSender?.Dispose();
+            _udpClient.Close();
             Cancel();
         }
 
@@ -114,15 +114,15 @@ namespace MiBand_Heartrate_2.Extras
             var heartRateInt = (int)_device.Heartrate;
             var heartRateFloat = _device.Heartrate / 127f - 1f;
             var heartRateFloat01 = _device.Heartrate / 255f;
-            
-            _oscSender.Send(new OscMessage(Addresses.HeartRateInt, heartRateInt));
-            _oscSender.Send(new OscMessage(Addresses.HeartRate3, heartRateInt));
-            
-            _oscSender.Send(new OscMessage(Addresses.HeartRateFloat, heartRateFloat));
-            _oscSender.Send(new OscMessage(Addresses.HeartRate, heartRateFloat));
-            
-            _oscSender.Send(new OscMessage(Addresses.HeartRateFloat01, heartRateFloat01));
-            _oscSender.Send(new OscMessage(Addresses.HeartRate2, heartRateFloat01));
+
+            _udpClient.Send(new OscMessage(Addresses.HeartRateInt, heartRateInt).ToByteArray());
+            _udpClient.Send(new OscMessage(Addresses.HeartRate3, heartRateInt).ToByteArray());
+
+            _udpClient.Send(new OscMessage(Addresses.HeartRateFloat, heartRateFloat).ToByteArray());
+            _udpClient.Send(new OscMessage(Addresses.HeartRate, heartRateFloat).ToByteArray());
+
+            _udpClient.Send(new OscMessage(Addresses.HeartRateFloat01, heartRateFloat01).ToByteArray());
+            _udpClient.Send(new OscMessage(Addresses.HeartRate2, heartRateFloat01).ToByteArray());
         }
 
         private void OnHeartrateMonitorStarted()
@@ -158,15 +158,15 @@ namespace MiBand_Heartrate_2.Extras
 
         private async Task Send(int span, CancellationToken cancellationToken)
         {
-            _oscSender.Send(new OscMessage(Addresses.HeartBeatInt, 1));
-            _oscSender.Send(new OscMessage(Addresses.HeartBeatPulse, true));
-            _oscSender.Send(new OscMessage(Addresses.HeartBeatToggle, _currentBeatToggle));
+            _udpClient.Send(new OscMessage(Addresses.HeartBeatInt, 1).ToByteArray());
+            _udpClient.Send(new OscMessage(Addresses.HeartBeatPulse, true).ToByteArray());
+            _udpClient.Send(new OscMessage(Addresses.HeartBeatToggle, _currentBeatToggle).ToByteArray());
             
             // Wait for QRS interval
             await Task.Delay(span / 5, cancellationToken);
-            
-            _oscSender.Send(new OscMessage(Addresses.HeartBeatInt, 0));
-            _oscSender.Send(new OscMessage(Addresses.HeartBeatPulse, false));
+
+            _udpClient.Send(new OscMessage(Addresses.HeartBeatInt, 0).ToByteArray());
+            _udpClient.Send(new OscMessage(Addresses.HeartBeatPulse, false).ToByteArray());
             
             _currentBeatToggle = !_currentBeatToggle;
         }

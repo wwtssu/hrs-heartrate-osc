@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace MiBand_Heartrate_2.Devices
@@ -71,16 +72,15 @@ namespace MiBand_Heartrate_2.Devices
         {
             var rnd = new Random();
             
-            try
-            {
-
+            try {
                 while (_running)
                 {
                     Heartrate = (ushort)rnd.Next(55, 180);
                     Thread.Sleep(3000);
                 }
+            } catch (ThreadInterruptedException) {
+                Debug.WriteLine("Dummy Device Alive Thread Killed");
             }
-            catch (ThreadAbortException) { }
 
             HeartrateMonitorStarted = false;
         }
