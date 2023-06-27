@@ -306,7 +306,7 @@ namespace MiBand_Heartrate_2.Devices
 
             if (_keepHeartrateAliveThread != null)
             {
-                _keepHeartrateAliveThread.Abort();
+                _keepHeartrateAliveThread.Interrupt();
                 _keepHeartrateAliveThread = null;
             }
 

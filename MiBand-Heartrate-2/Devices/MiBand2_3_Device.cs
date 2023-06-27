@@ -85,7 +85,7 @@ namespace MiBand_Heartrate_2.Devices
                         {
                             characteristic.Characteristics[0].ValueChanged += OnAuthenticateNotify;
 
-                            _key = new SHA256Managed().ComputeHash(Guid.NewGuid().ToByteArray()).Take(16).ToArray();
+                            _key = SHA256.HashData(Guid.NewGuid().ToByteArray()).Take(16).ToArray();
 
                             using (var stream = new MemoryStream())
                             {
