@@ -70,14 +70,14 @@
             </StackPanel>
         </Grid>
 
-        <GroupBox Header="Heartrate" Margin="5" BorderBrush="DarkGray">
+        <GroupBox Header="Heartrate" Margin="5" >
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Label FontSize="32" Margin="0 10" Content="{Binding Device.Heartrate}"></Label>
                 <Label FontSize="32" Margin="0 10">bpm</Label>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Options" Margin="5" BorderBrush="DarkGray">
+        <GroupBox Header="Options" Margin="5">
             <StackPanel Margin="5">
                 <CheckBox Margin="0 2" IsChecked="{Binding ContinuousMode, Mode=TwoWay}">Enable continuous mode</CheckBox>
                 <CheckBox Margin="0 2" IsChecked="{Binding EnableCSVOutput, Mode=TwoWay}">Export data in CSV file</CheckBox>
