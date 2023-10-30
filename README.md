@@ -15,8 +15,8 @@ Enable and monitor heartrate with Mi Band device on Windows 10.
 
 ### Requirements
 
-* .NET Framework 4.8 ([download](https://dotnet.microsoft.com/download/dotnet-framework/net48))
-* Windows 10 1703+ (Creators Update)
+* .NET Desktop Runtime 7.0+ ([download](https://dotnet.microsoft.com/en-us/download/dotnet/7.0))
+* Windows 10
 * Bluetooth adapter supporting Bluetooth 4.0/4.2 BLE
 
 
@@ -111,10 +111,8 @@ If "Send OSC to VRChat" is enabled, this app will continue to send the following
 
 ### Build requirements
 
-* Windows SDK 10.0.18362.1
-
-  Download : [Windows SDK and emulator archive](https://developer.microsoft.com/en-US/windows/downloads/sdk-archive/)
-* Visual Studio 2019
+* Visual Studio 2022 17.4+
+* Visual Studio .NET desktop development workload
 
 
 ### Build
@@ -141,7 +139,7 @@ VRChat
 
 
 ### Thirdparty licenses
-Rug.Osc | [MIT Licence](https://bitbucket.org/rugcode/rug.osc/wiki/License)
+OscCore | [MIT Licence](https://github.com/tilde-love/osc-core)
 
 
 ### License
