@@ -1,4 +1,4 @@
-﻿<Window x:Class="MiBand_Heartrate_2.ConnectionWindow"
+<Window x:Class="MiBand_Heartrate_2.ConnectionWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,7 +17,7 @@
         <local:ConnectionWindowViewModel></local:ConnectionWindowViewModel>
     </Window.DataContext>
 
-    <StackPanel Background="White" Margin="10">
+    <StackPanel Margin="10">
         <StackPanel Orientation="Horizontal">
             <Label Content="Select your device" Width="150"></Label>
             <ComboBox Width="200" SelectedValue="{Binding SelectedDevice, Mode=TwoWay}" ItemsSource="{Binding Devices}" DisplayMemberPath="Name"></ComboBox>
