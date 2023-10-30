@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -84,7 +85,7 @@ namespace MiBand_Heartrate_2.Devices
                         {
                             characteristic.Characteristics[0].ValueChanged += OnAuthenticateNotify;
 
-                            _key = new SHA256Managed().ComputeHash(Guid.NewGuid().ToByteArray()).Take(16).ToArray();
+                            _key = SHA256.HashData(Guid.NewGuid().ToByteArray()).Take(16).ToArray();
 
                             using (var stream = new MemoryStream())
                             {
@@ -300,7 +301,7 @@ namespace MiBand_Heartrate_2.Devices
 
             if (_keepHeartrateAliveThread != null)
             {
-                _keepHeartrateAliveThread.Abort();
+                _keepHeartrateAliveThread.Interrupt();
                 _keepHeartrateAliveThread = null;
             }
 
@@ -355,15 +356,15 @@ namespace MiBand_Heartrate_2.Devices
 
         void RunHeartrateKeepAlive()
         {
-            try
-            {
+            try {
                 while (_heartrateCharacteristic != null)
                 {
                     BLE.Write(_heartrateCharacteristic, new byte[] { 0x16 });
                     Thread.Sleep(5000);
                 }
+            } catch (ThreadInterruptedException) {
+                Debug.WriteLine("BLE Device Alive Thread Killed");
             }
-            catch (ThreadAbortException) { }
         }
     }
 }
