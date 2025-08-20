@@ -12,7 +12,10 @@ namespace MiBand_Heartrate_2.Devices
         MIBAND_2_3,
 
         [Description("Mi Band 4/5")]
-        MIBAND_4
+        MIBAND_4,
+
+        [Description("Heartrate Broadcase")]
+        HEARTRATE_BROADCAST
     }
 
     public abstract class Device : INotifyPropertyChanged

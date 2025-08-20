@@ -258,15 +258,21 @@ namespace MiBand_Heartrate_2
 
                             Device = device;
 
-                            if (bluetooth.Watcher != null)
+                            if (bluetooth.Watchers != null)
                             {
-                                bluetooth.Watcher.Added -= OnBluetoothAdded;
+                                foreach (DeviceWatcher Watcher in bluetooth.Watchers)
+                                {
+                                    Watcher.Added -= OnBluetoothAdded;
+                                }
                             }
 
                             bluetooth.StopWatcher();
                         }
 
-                        bluetooth.Watcher.Added += OnBluetoothAdded;
+                        foreach (DeviceWatcher Watcher in bluetooth.Watchers)
+                        {
+                            Watcher.Added += OnBluetoothAdded;
+                        }
 
                         bluetooth.StartWatcher();
                     }, o => { return Device == null || Device.Status == DeviceStatus.OFFLINE; });

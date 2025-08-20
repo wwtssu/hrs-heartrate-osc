@@ -11,14 +11,14 @@ namespace MiBand_Heartrate_2
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        DeviceWatcher _watcher;
+        DeviceWatcher[] _watchers;
 
-        public DeviceWatcher Watcher
+        public DeviceWatcher[] Watchers
         {
-            get { return _watcher; }
+            get { return _watchers; }
             set
             {
-                _watcher = value;
+                _watchers = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Watcher"));
             }
         }
@@ -27,35 +27,49 @@ namespace MiBand_Heartrate_2
 
         public BLE(string[] filters)
         {
-            Watcher = DeviceInformation.CreateWatcher(
-                BluetoothLEDevice.GetDeviceSelectorFromPairingState(true),
-                filters,
-                DeviceInformationKind.AssociationEndpoint
-            );
+            Watchers = [
+                DeviceInformation.CreateWatcher(
+                    BluetoothLEDevice.GetDeviceSelectorFromPairingState(true),
+                    filters,
+                    DeviceInformationKind.AssociationEndpoint
+                ),
+                DeviceInformation.CreateWatcher(
+                    BluetoothLEDevice.GetDeviceSelectorFromPairingState(false),
+                    filters,
+                    DeviceInformationKind.AssociationEndpoint
+                )
+            ];
         }
 
         ~BLE()
         {
-            if (Watcher != null)
+            if (Watchers != null)
             {
                 StopWatcher();
             }
-            Watcher = null;
+            Watchers = null;
         }
 
         public void StartWatcher()
         {
-            if (Watcher != null)
+            if (Watchers != null && Watchers.Length != 0)
             {
-                Watcher.Start();
+                foreach (DeviceWatcher Watcher in Watchers) {
+                    Watcher.Start();
+                }
             }
         }
 
         public void StopWatcher()
         {
-            if (Watcher != null && Watcher.Status == DeviceWatcherStatus.Started)
+            if (Watchers != null)
             {
-                Watcher.Stop();
+                foreach (DeviceWatcher Watcher in Watchers)
+                {
+                    if (Watcher.Status == DeviceWatcherStatus.Started) {
+                        Watcher.Stop();
+                    }
+                }
             }
         }
 

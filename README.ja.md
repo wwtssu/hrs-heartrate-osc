@@ -1,6 +1,6 @@
-# Mi Band Heartrate
+# HRS Heartrate
 
-Windows10でMi Bandデバイスで心拍数を取得します。
+Windows10or11でMi BandデバイスとHRSデバイスで心拍数を取得します。
 
 ![miband heartrate](https://github.com/Eryux/miband-heartrate/raw/master/mibandheatrate-screen.png "Mi Band Heartrate screen")
 
@@ -10,13 +10,14 @@ Windows10でMi Bandデバイスで心拍数を取得します。
 * Mi Band 3
 * Mi Band 4
 * Mi Band 5
+* HRS デバイス
 
 
 ### 動作環境
 
-* .NET Desktop Runtime 7.0+ ([download](https://dotnet.microsoft.com/en-us/download/dotnet/7.0))
-* Windows 10
-* Bluetooth adapter supporting Bluetooth 4.0/4.2 BLE
+* .NET Desktop Runtime 8.0+ ([download](https://dotnet.microsoft.com/en-us/download/dotnet/8.0))
+* Windows 10 or 11
+* Bluetooth adapter supporting Bluetooth 4.0+ BLE
 
 
 ### 使い方

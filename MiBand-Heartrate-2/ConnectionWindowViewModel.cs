@@ -34,7 +34,7 @@ namespace MiBand_Heartrate_2
             }
         }
 
-        DeviceModel _deviceModel = DeviceModel.MIBAND_2_3;
+        DeviceModel _deviceModel = DeviceModel.HEARTRATE_BROADCAST;
 
         public DeviceModel DeviceModel
         {
@@ -60,23 +60,30 @@ namespace MiBand_Heartrate_2
         {
             // Enables a CollectionView object to participate in synchronized access to a collection that is used on multiple threads.
             BindingOperations.EnableCollectionSynchronization(Devices, new object());
-            
+
             _bluetooth = new BLE(new string[] {"System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected"});
-
-            _bluetooth.Watcher.Added += OnBluetoothAdded;
-            _bluetooth.Watcher.Updated += OnBluetoothUpdated;
-            _bluetooth.Watcher.Removed += OnBluetoothRemoved;
-
+            if (_bluetooth.Watchers != null) {
+                foreach (DeviceWatcher Watcher in _bluetooth.Watchers)
+                {
+                    Watcher.Added += OnBluetoothAdded;
+                    Watcher.Updated += OnBluetoothUpdated;
+                    Watcher.Removed += OnBluetoothRemoved;
+                }
+            }
+  
             _bluetooth.StartWatcher();
         }
 
         ~ConnectionWindowViewModel()
         {
-            if (_bluetooth.Watcher != null)
+            if (_bluetooth.Watchers != null)
             {
-                _bluetooth.Watcher.Added -= OnBluetoothAdded;
-                _bluetooth.Watcher.Updated -= OnBluetoothUpdated;
-                _bluetooth.Watcher.Removed -= OnBluetoothRemoved;
+                foreach (DeviceWatcher Watcher in _bluetooth.Watchers)
+                {
+                    Watcher.Added -= OnBluetoothAdded;
+                    Watcher.Updated -= OnBluetoothUpdated;
+                    Watcher.Removed -= OnBluetoothRemoved;
+                }
             }
             
             _bluetooth.StopWatcher();
@@ -103,6 +110,8 @@ namespace MiBand_Heartrate_2
 
         private void OnBluetoothAdded(DeviceWatcher sender, DeviceInformation args)
         {
+            if (args.Name == "")
+                return;
             Devices.Add(args);
         }
 
@@ -135,7 +144,9 @@ namespace MiBand_Heartrate_2
                                 {
                                     device = new MiBand4_Device(SelectedDevice, authWindow.AuthenticationKeyResult);
                                 }
-
+                                break;
+                            case DeviceModel.HEARTRATE_BROADCAST:
+                                device = new Heartrate_Broadcast_Device(SelectedDevice);
                                 break;
                         }
 

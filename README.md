@@ -1,7 +1,7 @@
-# Mi Band Heartrate
+# HRS Heartrate
 [日本語](README.ja.md)
 
-Enable and monitor heartrate with Mi Band device on Windows 10.
+Enable and monitor heartrate with Mi Band device and HRS devices on Windows 10 or 11.
 
 ![miband heartrate](https://github.com/Eryux/miband-heartrate/raw/master/mibandheatrate-screen.png "Mi Band Heartrate screen")
 
@@ -11,13 +11,14 @@ Enable and monitor heartrate with Mi Band device on Windows 10.
 * Mi Band 3
 * Mi Band 4
 * Mi Band 5
+* HRS Devices
 
 
 ### Requirements
 
-* .NET Desktop Runtime 7.0+ ([download](https://dotnet.microsoft.com/en-us/download/dotnet/7.0))
-* Windows 10
-* Bluetooth adapter supporting Bluetooth 4.0/4.2 BLE
+* .NET Desktop Runtime 8.0+ ([download](https://dotnet.microsoft.com/en-us/download/dotnet/8.0))
+* Windows 10 or 11
+* Bluetooth adapter supporting Bluetooth 4.0+ BLE
 
 
 ### Usage
